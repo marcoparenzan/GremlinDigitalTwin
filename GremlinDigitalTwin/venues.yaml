@@ -1,0 +1,119 @@
+﻿Venues:
+- House01:
+    Floors:
+    - Basement:
+        Rooms:
+    - Floor1:
+        Rooms:
+        - Bath1:
+          Type: Bathroom
+          Devices:
+          - Central:
+              Sensors:
+              - Temperature1:
+                  Type: Temperature
+                  SetPoint: 23
+              - Humidity1:
+                  Type: Humidity
+                  SetPoint: 90
+        - Kitchen:
+    - Floor2:
+        Rooms:
+        - Bath:
+          Type: Bathroom
+          Devices:
+          - Central:
+              Sensors:
+              - TemperatureA:
+                  Type: Temperature
+                  SetPoint: 26
+              - HumidityB:
+                  Type: Humidity
+                  SetPoint: 70
+        - Bedroom1:
+- Office02:
+    Rooms:
+    - BathX:
+        Type: Bathroom
+        Devices:
+        - Central:
+            Sensors:
+            - Temperature1:
+                Type: Temperature
+                SetPoint: 22
+            - Humidity1:
+                Type: Humidity
+                SetPoint: 50
+    - Office1:
+        Type: Office
+        Devices:
+        - Central:
+            Sensors:
+            - TemperatureA:
+                Type: Temperature
+                SetPoint: 23
+            - Light_1:
+                Type: Light
+                SetPoint: 100
+            - Office2:
+- House03:
+    Floors:
+    - Basement:
+        Rooms:
+        - Bath:
+            Type: Bathroom
+            Devices:
+            - Central:
+                Sensors:
+                - TemperatureA:
+                    Type: Temperature
+                    SetPoint: 23
+        - Garage1:
+        - Garage2:
+    - Floor1:
+        Rooms:
+        - Bath1:
+            Type: Bathroom
+            Devices:
+            - Central:
+                Sensors:
+                - TemperatureA:
+                    Type: Temperature
+                    SetPoint: 26
+                - HumidityB:
+                    Type: Humidity
+                    SetPoint: 80
+        - Kitchen:
+        - Bath2:
+            Type: Bathroom
+            Devices:
+            - Central:
+                Sensors:
+                - TemperatureA:
+                    Type: Temperature
+                    SetPoint: 23
+                - HumidityB:
+                    Type: Humidity
+                    SetPoint: 50
+        - MasterBedroom:
+            Type: Bedroom
+            Devices:
+            - Central:
+                Sensors:
+                - TemperatureA:
+                    Type: Temperature
+                    SetPoint: 19
+                - Light_1:
+                    Type: Light
+                    SetPoint: 50
+        - ChildrenBedroom:
+            Type: Bedroom
+            Devices:
+            - Central:
+                Sensors:
+                - TemperatureA:
+                    Type: Temperature
+                    SetPoint: 23
+                - Light_1:
+                    Type: Light
+                    SetPoint: 100
