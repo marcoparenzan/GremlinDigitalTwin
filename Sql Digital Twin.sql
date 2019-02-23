@@ -109,16 +109,99 @@ exec dbo.AddSensor 'House03-Floor1-Bath2-Central', 'Humidity1', 'Humidity'
 
 
 --
+-- sp
+--
+
+CREATE PROCEDURE [dbo].[AddTopology]
+(
+    @Base nvarchar(64), @Name nvarchar(64), @Type nvarchar(64), @SubType nvarchar(64)
+)
+AS
+BEGIN
+
+	DECLARE @fullname nvarchar(64)
+	IF @Base = ''
+		SET @FullName = @Name
+	ELSE
+		SET @FullName = @Base + '-' + @Name
+
+    INSERT dbo.Topology (Name, Type, SubType) VALUES (@FullName, @Type, @SubType)
+
+	IF (@Base <> '')
+	BEGIN
+			INSERT dbo.TopologyEdges VALUES (
+			(SELECT $node_id FROM dbo.Topology WHERE Name = @Base),
+			(SELECT $node_id FROM dbo.Topology WHERE Name = @FullName)
+		)
+	END
+END
+
+CREATE PROCEDURE [dbo].[AddDevice]
+(
+    @Base nvarchar(64), @Name nvarchar(64), @SubType nvarchar(64) = 'Base'
+)
+AS
+BEGIN
+
+	DECLARE @fullname nvarchar(64)
+	SET @FullName = @Base + '-' + @Name
+
+    INSERT dbo.Devices (Name, Type, SubType) VALUES (@FullName, 'Device', @SubType)
+
+	INSERT dbo.DeviceEdges VALUES (
+		(SELECT $node_id FROM dbo.Topology WHERE Name = @Base),
+		(SELECT $node_id FROM dbo.Devices WHERE Name = @FullName)
+	)
+END
+
+
+CREATE PROCEDURE [dbo].[AddSensor]
+(
+    @Base nvarchar(64), @Name nvarchar(64), @SubType nvarchar(64)
+)
+AS
+BEGIN
+
+	DECLARE @fullname nvarchar(64)
+	SET @FullName = @Base + '-' + @Name
+
+    INSERT dbo.Devices (Name, Type, SubType) VALUES (@FullName, 'Sensor', @SubType)
+
+	INSERT dbo.DeviceEdges VALUES (
+		(SELECT $node_id FROM dbo.Devices WHERE Name = @Base),
+		(SELECT $node_id FROM dbo.Devices WHERE Name = @FullName)
+	)
+END
+
+--
 -- queries
 --
 
-SELECT t.*
+SELECT * FROM Topology
+
+SELECT * FROM TopologyEdges
+
+SELECT * FROM Devices
+
+SELECT * FROM DeviceEdges
+
+-- some matches
+
+select t1.type, t2.type, t3.type, t3.name
+from Topology t1, TopologyEdges e1, Topology t2, TopologyEdges e2, Topology t3
+WHERE MATCH(t1-(e1)->t2-(e2)->t3)
+
+select t1.type, t2.type, t2.name
+from Topology t1, TopologyEdges e1, Topology t2
+WHERE MATCH(t1-(e1)->t2)
+
+SELECT t.Name, d2.*
 FROM Topology t, DeviceEdges, Devices d, DeviceEdges e2, Devices d2
 WHERE MATCH (t-(DeviceEdges)->d-(e2)->d2)
+AND d2.SubType = 'Temperature'
 
-
-select t1.*
-from Topology t1, TopologyEdges e1, Topology t2, TopologyEdges e2, Topology t3
-WHERE MATCH(t1<-(e1)-t2 OR t1<-(e1)-t2<-(e1)-t3)
-and t2.Type = 'Venue'
-and t1.Type = 'Room'
+SELECT t1.*
+--Topology t1, TopologyEdges e1, 
+--t1-(e1)->
+FROM Topology t, DeviceEdges, Devices d, DeviceEdges e2, Devices d2
+WHERE MATCH (t-(DeviceEdges)->d-(e2)->d2)
