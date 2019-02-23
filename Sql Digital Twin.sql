@@ -1,4 +1,9 @@
 --
+--	Creating a Digital Twin with Azure Sql Database
+-- SQL Saturday Pordenone 2019- Feb 23rd, 2019
+--
+
+--
 -- creating nodes and edges
 --
 
